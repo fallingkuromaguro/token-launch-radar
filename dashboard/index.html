@@ -3,12 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Token Radar: pre-token protocols ranked by implied value</title>
+<title>Token Radar: pre-token protocols ranked by implied token value</title>
 <link rel="stylesheet" href="app.css">
 </head>
 <body>
-<a class="skip" href="#board">Skip to the board</a>
-<main id="board" tabindex="-1" aria-busy="true"></main>
+<header class="top">
+  <div class="brand"><span class="logo" aria-hidden="true"></span><span class="name">Token Radar</span><span class="ver" id="ver"></span></div>
+  <nav class="tabs" aria-label="Views">
+    <a href="#/board" data-tab="board">Board</a>
+    <a href="#/live" data-tab="live">Live tokens</a>
+    <a href="#/not-ranked" data-tab="not-ranked">Not ranked</a>
+    <a href="#/method" data-tab="method">Method</a>
+  </nav>
+  <div class="snap" id="snap"></div>
+</header>
+<section class="kpis" id="kpis" aria-label="Summary"></section>
+<main id="view" tabindex="-1" aria-live="polite"></main>
+<footer class="foot">Implied values are this radar's own estimates from one DefiLlama snapshot. They are not a forecast that a token will exist, not a price, and not advice. A protocol that records no token may still issue one.</footer>
 <script src="../data.js"></script>
 <script src="app.js"></script>
 </body>
