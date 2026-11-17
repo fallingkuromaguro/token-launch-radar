@@ -13,7 +13,7 @@
   rows.forEach(function (r) { bySlug[r.slug] = r; });
   var top = rows[0];
   var maxLog = Math.log10(top.implied_value_usd);
-  var LOG_FLOOR = 5;
+  var LOG_FLOOR = 6;
 
   var cats = uniq(rows.map(function (r) { return r.category || 'Uncategorised'; })).sort();
   var chains = uniq([].concat.apply([], rows.map(function (r) { return r.chains; }))).sort();
@@ -30,7 +30,8 @@
     chg: { dir: 'desc', get: function (r) { return r.change_7d === null ? -Infinity : r.change_7d; } },
     age: { dir: 'desc', get: function (r) { return r.age_days === null ? -1 : r.age_days; } }
   };
-  var CONF = { low: 'thin record', medium: 'under a year', higher: 'a year or more' };
+  var CONF = { low: 'thin', medium: '< 1 yr', higher: '1 yr +' };
+  var CONF_LONG = { low: 'thin record, under 6 months', medium: 'under a year of record', higher: 'a year or more of record' };
 
   /* ---------- helpers ---------- */
   function uniq(a) { return a.filter(function (v, i) { return a.indexOf(v) === i; }); }
@@ -58,7 +59,7 @@
   }
   function barPx(v) {
     var x = (Math.log10(v) - LOG_FLOOR) / (maxLog - LOG_FLOOR);
-    return Math.max(4, Math.min(1, x)) * 120;
+    return Math.max(3, Math.min(1, x)) * 90;
   }
   function parseHash() {
     var raw = location.hash.replace(/^#/, '');
@@ -147,7 +148,7 @@
       '<button id="f-reset" type="button">Reset</button>' +
       '<span class="count" id="count" aria-live="polite"></span>' +
       '</div>' +
-      '<div id="table-wrap"></div>' +
+      '<div id="table-wrap" class="scroll"></div>' +
       '<div class="scale-note">Range is the 50% scatter of comparable market caps around the estimate. Records younger than a year carry less weight in the confidence label, not in the value.</div>' +
       '</section>';
 
@@ -210,7 +211,7 @@
         '<td class="r num ' + pctClass(r.change_7d) + '">' + pct(r.change_7d) + '</td>' +
         '<td class="r"><span class="value">' + usd(r.implied_value_usd) + '</span><span class="bar" style="width:' + barPx(r.implied_value_usd).toFixed(0) + 'px"></span></td>' +
         '<td class="r range">' + usd(r.band_low_usd) + ' to ' + usd(r.band_high_usd) + '</td>' +
-        '<td><span class="pill ' + (r.confidence === 'low' ? 'low' : '') + '">' + age(r.age_days) + ', ' + CONF[r.confidence] + '</span></td>' +
+        '<td><span class="num">' + age(r.age_days) + '</span> <span class="pill ' + (r.confidence === 'low' ? 'low' : '') + '">' + CONF[r.confidence] + '</span></td>' +
         '</tr>';
     });
     if (list.length === 0) html += '<tr><td colspan="9" class="empty">No protocol matches these filters. Reset them to see the whole board.</td></tr>';
@@ -263,7 +264,7 @@
       '<li><span class="k">4. Category family</span><span class="f">' + pct(f.family_adj_pct) + '</span>' +
       '<span class="formula">' + esc(f.family_label) + ', n = ' + f.family_n + ': median residual shrunk by n ÷ (n + 5)</span></li>' +
       '<li><span class="k">5. Chain reach</span><span class="f">' + pct(f.chain_adj_pct) + '</span>' +
-      '<span class="formula">' + f.chain_count + ' chains, against the comparables’ mean of ' + c.chain_mean.toFixed(1) + ' (capped at 10)</span></li>' +
+      '<span class="formula">' + f.chain_count + (f.chain_count === 1 ? ' chain' : ' chains') + ', against the comparables’ mean of ' + c.chain_mean.toFixed(1) + ' (capped at 10)</span></li>' +
       '<li><span class="k">6. Wrapper check</span><span class="f">' + (f.wrapper_adj_pct === 0 ? 'none' : pct(f.wrapper_adj_pct)) + '</span>' +
       '<span class="formula">' + (f.wrapper_adj_pct === 0 ? 'the category is not a soft wrapper type' : 'a soft wrapper type may be a product of a token that trades: half weight') + '</span></li>' +
       '<li class="total"><span class="k">Implied value</span><span class="f">' + usd(r.implied_value_usd) + '</span>' +
@@ -287,7 +288,7 @@
       '<span class="range">50% range ' + usd(r.band_low_usd) + ' to ' + usd(r.band_high_usd) + '</span>' +
       '<div class="facts">' +
       fact('TVL', usd(r.tvl_usd)) + fact('7-day TVL change', pct(r.change_7d), pctClass(r.change_7d)) +
-      fact('Record age', age(r.age_days) + ' (listed ' + (r.listed_at || 'unknown') + ')') + fact('Confidence', CONF[r.confidence]) +
+      fact('Record age', age(r.age_days) + ' (listed ' + (r.listed_at || 'unknown') + ')') + fact('Confidence', CONF_LONG[r.confidence]) +
       fact('Capital per position', '$' + f.capital_per_position_usd) + fact('Chains', r.chains.length) +
       '</div>' +
       '<p class="note">An estimate of market value from this snapshot’s own figures. It does not say a token will exist, when, or at what price.</p>' +

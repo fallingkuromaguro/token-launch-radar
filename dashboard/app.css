@@ -77,9 +77,11 @@ table.grid { width: 100%; border-collapse: collapse; }
 .grid .rank { font-family: var(--mono); color: var(--ink-3); width: 44px; }
 .grid .proto .n { font-weight: 600; color: var(--ink); }
 .grid .proto .s { display: block; font-family: var(--mono); font-size: 11px; color: var(--ink-3); }
-.grid .chains { color: var(--ink-2); max-width: 240px; overflow: hidden; text-overflow: ellipsis; }
-.grid .cat { color: var(--ink-2); max-width: 170px; overflow: hidden; text-overflow: ellipsis; }
+.grid .chains { color: var(--ink-2); max-width: 200px; overflow: hidden; text-overflow: ellipsis; }
+.grid .cat { color: var(--ink-2); max-width: 150px; overflow: hidden; text-overflow: ellipsis; }
 .bar { display: inline-block; height: 8px; border-radius: 2px; background: var(--blue); vertical-align: middle; margin-left: 8px; }
+.scroll { overflow-x: auto; }
+.foot { padding: 12px 24px 24px; color: var(--ink-3); font-size: 12px; max-width: 1100px; }
 .value { font-family: var(--mono); font-weight: 600; font-variant-numeric: tabular-nums; }
 .range { font-family: var(--mono); color: var(--ink-3); font-size: 12px; }
 .pill { display: inline-block; font-size: 11px; border: 1px solid var(--line); border-radius: 999px; padding: 0 7px; color: var(--ink-2); }
@@ -103,11 +105,14 @@ table.grid { width: 100%; border-collapse: collapse; }
 .facts .label { color: var(--ink-3); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; }
 .facts .v { font-family: var(--mono); font-size: 14px; }
 .steps { padding: 0; margin: 0; list-style: none; }
-.steps li { display: grid; grid-template-columns: 210px minmax(0, 1fr) auto; gap: 12px; padding: 8px 16px; border-bottom: 1px solid var(--line); align-items: baseline; }
+.steps li { display: grid; grid-template-columns: 200px minmax(0, 1fr) 96px; gap: 12px; padding: 8px 16px; border-bottom: 1px solid var(--line); align-items: baseline; }
+.steps .k { grid-column: 1; grid-row: 1; }
+.steps .formula { grid-column: 2; grid-row: 1; }
+.steps .f { grid-column: 3; grid-row: 1; }
 .steps li:last-child { border-bottom: 0; }
 .steps .k { color: var(--ink-2); }
 .steps .f { font-family: var(--mono); text-align: right; }
-.steps .formula { color: var(--ink-3); font-family: var(--mono); font-size: 11px; grid-column: 2 / 4; }
+.steps .formula { color: var(--ink-3); font-family: var(--mono); font-size: 11px; }
 .steps li.total { background: var(--panel-2); font-weight: 650; }
 .plan { counter-reset: s; padding: 0; margin: 0; list-style: none; }
 .plan li { counter-increment: s; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--line); }
